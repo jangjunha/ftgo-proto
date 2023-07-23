@@ -37,9 +37,7 @@ jobs:
           arguments: build
           build-root-directory: jvm/
 
-      # The USERNAME and TOKEN need to correspond to the credentials environment variables used in
-      # the publishing section of your build.gradle
-      - name: Publish to GitHub Packages
+      - name: Publish to Gemfury
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
         with:
           arguments: |
@@ -47,5 +45,4 @@ jobs:
             -Pversion=${{ steps.configure-version.outputs.version }}-RELEASE
           build-root-directory: jvm/
         env:
-          USERNAME: ${{ github.actor }}
-          TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
