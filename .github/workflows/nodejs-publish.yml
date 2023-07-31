@@ -1,0 +1,30 @@
+name: Node.js Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: gemfury
+    permissions:
+      contents: read
+      packages: write
+    defaults:
+      run:
+        working-directory: javascript
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: javascript/.nvmrc
+      - run: yarn install --immutable
+      - run: yarn generate
+      - run: |
+          yarn config set npmAlwaysAuth true &&
+          yarn config set npmAuthToken "$FURY_TOKEN"
+        shell: bash
+        env:
+          FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
+      - run: yarn npm publish
