@@ -10,10 +10,18 @@ import "money.proto";
 
 service OrderService {
   rpc getOrder(GetOrderPayload) returns (Order) {}
+  rpc createOrder(CreateOrderPayload) returns (Order) {}
 }
 
 message GetOrderPayload {
   string id = 1;
+}
+
+message CreateOrderPayload {
+  string restaurantId = 1;
+  string consumerId = 2;
+  repeated MenuItemIdAndQuantity items = 3;
+  string deliveryAddress = 4;
 }
 
 enum OrderState {
@@ -41,6 +49,11 @@ message OrderLineItem {
   string menuItemId = 2;
   string name = 3;
   me.jangjunha.ftgo.common.Money price = 4;
+}
+
+message MenuItemIdAndQuantity {
+  int32 quantity = 1;
+  string menuItemId = 2;
 }
 
 message DeliveryInformation {
