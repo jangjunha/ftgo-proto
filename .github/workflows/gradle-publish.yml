@@ -38,7 +38,7 @@ jobs:
           arguments: build
           build-root-directory: jvm/
 
-      - name: Publish to Gemfury
+      - name: Publish
         uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
         with:
           arguments: |
@@ -47,3 +47,5 @@ jobs:
           build-root-directory: jvm/
         env:
           FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
+          GPR_USERNAME: ${{ github.actor }}
+          GPR_TOKEN: ${{ secrets.GITHUB_TOKEN }}

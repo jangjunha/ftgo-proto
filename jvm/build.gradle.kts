@@ -9,6 +9,14 @@ subprojects {
     configure<PublishingExtension> {
         repositories {
             maven {
+                name = "gpr"
+                url = uri("https://maven.pkg.github.com/jangjunha/ftgo-proto")
+                credentials {
+                    username = project.findProperty("gpr.user") as? String ?: System.getenv("GPR_USERNAME")
+                    password = project.findProperty("gpr.key") as? String ?: System.getenv("GPR_TOKEN")
+                }
+            }
+            maven {
                 name = "fury"
                 url = uri("https://maven.fury.io/jangjunha/")
                 authentication {
@@ -21,7 +29,7 @@ subprojects {
             }
         }
         publications {
-            register<MavenPublication>("fury") {
+            register<MavenPublication>("lib") {
                 pom {
                     name.set(project.name)
                     url.set("https://github.com/jangjunha/ftgo-proto")
@@ -32,7 +40,6 @@ subprojects {
                         }
                     }
                 }
-
                 from(components["java"])
             }
         }
