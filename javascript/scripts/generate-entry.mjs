@@ -14,6 +14,6 @@ fs.writeFile(
     "lib/index.d.ts",
     dirs
         .filter(f => f.endsWith(".d.ts"))
-        .map(f => `export type * from "./${f}";`)
+        .map(f => `export * from "./${f.replace(/\.d\.ts$/, "")}";`)
         .join("\n")
 );
