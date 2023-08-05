@@ -16,17 +16,17 @@ subprojects {
                     password = project.findProperty("gpr.key") as? String ?: System.getenv("GPR_TOKEN")
                 }
             }
-            maven {
-                name = "fury"
-                url = uri("https://maven.fury.io/jangjunha/")
-                authentication {
-                    create<BasicAuthentication>("basic")
-                }
-                credentials {
-                    username = System.getenv("FURY_TOKEN")
-                    password = "NOPASS"
-                }
-            }
+            // maven {
+            //     name = "fury"
+            //     url = uri("https://maven.fury.io/jangjunha/")
+            //     authentication {
+            //         create<BasicAuthentication>("basic")
+            //     }
+            //     credentials {
+            //         username = System.getenv("FURY_TOKEN")
+            //         password = "NOPASS"
+            //     }
+            // }
         }
         publications {
             register<MavenPublication>("lib") {
