@@ -4,35 +4,55 @@ on:
   release:
     types: [created]
 
+env:
+  GCP_PROJECT_ID: ftgo-jangjunha
+  GAR_LOCATION: asia-northeast3
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    environment: gemfury
+    environment: gcp
     permissions:
       contents: read
-      packages: write
+      id-token: write
     defaults:
       run:
         working-directory: javascript
     steps:
       - uses: actions/checkout@v3
+
       - name: Configure Environment Variables
         run: |
           TAG_NAME=${{ github.event.release.tag_name }}
           VERSION=${TAG_NAME#"v"}
           echo "VERSION=$VERSION" >> $GITHUB_ENV
+
       - uses: actions/setup-node@v3
         with:
           node-version-file: javascript/.nvmrc
+
+      - name: Google auth
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Configure Google Artifact Registry Authentication
+        run: |
+          yarn config set npmAuthToken $(gcloud auth print-access-token)
+
       - run: yarn install --immutable
+
       - run: yarn generate
-      - run: |
-          yarn config set npmAlwaysAuth true &&
-          yarn config set npmAuthToken "$FURY_TOKEN"
-        shell: bash
-        env:
-          FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
+
       - name: Configure Version
         run: |
           sed -i -e 's/"version": "0.0.0"/"version": "'"$VERSION"'"/' package.json
+
       - run: yarn npm publish
