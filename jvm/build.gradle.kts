@@ -1,6 +1,11 @@
+plugins {
+  id("com.google.cloud.artifactregistry.gradle-plugin") version "2.2.1" apply false
+}
+
 subprojects {
     apply(plugin = "java-library")
     apply(plugin = "maven-publish")
+    apply(plugin = "com.google.cloud.artifactregistry.gradle-plugin")
 
     configure<JavaPluginExtension> {
         withSourcesJar()
@@ -9,24 +14,9 @@ subprojects {
     configure<PublishingExtension> {
         repositories {
             maven {
-                name = "gpr"
-                url = uri("https://maven.pkg.github.com/jangjunha/ftgo-proto")
-                credentials {
-                    username = project.findProperty("gpr.user") as? String ?: System.getenv("GPR_USERNAME")
-                    password = project.findProperty("gpr.key") as? String ?: System.getenv("GPR_TOKEN")
-                }
+                name = "GoogleArtifactRegistry"
+                url = uri("artifactregistry://asia-northeast3-maven.pkg.dev/ftgo-jangjunha/maven-public")
             }
-            // maven {
-            //     name = "fury"
-            //     url = uri("https://maven.fury.io/jangjunha/")
-            //     authentication {
-            //         create<BasicAuthentication>("basic")
-            //     }
-            //     credentials {
-            //         username = System.getenv("FURY_TOKEN")
-            //         password = "NOPASS"
-            //     }
-            // }
         }
         publications {
             register<MavenPublication>("lib") {
