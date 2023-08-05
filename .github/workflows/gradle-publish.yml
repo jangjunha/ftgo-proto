@@ -3,15 +3,23 @@ name: Gradle Package
 on:
   release:
     types: [created]
+  push:
+    branches: gar-test
+
+env:
+  GCP_PROJECT_ID: ftgo-jangjunha
+  GAR_LOCATION: asia-northeast3
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: gemfury
+    environment: gcp
     permissions:
       contents: read
-      packages: write
-
+      id-token: write
+    defaults:
+      run:
+        working-directory: jvm
     steps:
       - uses: actions/checkout@v3
 
@@ -30,6 +38,18 @@ jobs:
           server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
           settings-path: ${{ github.workspace }} # location for the settings.xml file
 
+      - name: Google auth
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WIF_PROVIDER }}
+          service_account: ${{ secrets.GCP_WIF_SERVICE_ACCOUNT }}
+
+      - name: Set up Cloud SDK
+        uses: "google-github-actions/setup-gcloud@v1"
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
       - uses: gradle/wrapper-validation-action@56b90f209b02bf6d1deae490e9ef18b21a389cd4 # v1.1.0
 
       - name: Build with Gradle
@@ -43,9 +63,5 @@ jobs:
         with:
           arguments: |
             publish
-            -Pversion=${{ steps.configure-version.outputs.version }}-RELEASE
+            -Pversion=${{ steps.configure-version.outputs.version }}
           build-root-directory: jvm/
-        env:
-          FURY_TOKEN: ${{ secrets.FURY_TOKEN }}
-          GPR_USERNAME: ${{ github.actor }}
-          GPR_TOKEN: ${{ secrets.GITHUB_TOKEN }}

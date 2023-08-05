@@ -16,6 +16,6 @@
     "ts-protoc-gen": "^0.15.0"
   },
   "publishConfig": {
-    "registry": "https://npm.fury.io/jangjunha/"
+    "registry": "https://asia-northeast3-npm.pkg.dev/ftgo-jangjunha/npm-public/"
   }
 }
