@@ -2,11 +2,9 @@
   "name": "@jangjunha/ftgo-proto",
   "version": "0.0.0",
   "packageManager": "yarn@3.6.1",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
   "scripts": {
     "clean": "rm -rf lib/",
-    "generate": "yarn clean && mkdir -p lib/ && find ../protos/ -name \"*.proto\" | xargs yarn grpc_tools_node_protoc --plugin=protoc-gen-ts=\"scripts/protoc-gen-ts.sh\" -I../protos/ --js_out=import_style=commonjs_strict,binary:lib/ --grpc_out=grpc_js:lib/ --ts_out=service=grpc-node,mode=grpc-js:lib/ && yarn node scripts/generate-entry.mjs"
+    "generate": "yarn clean && mkdir -p lib/ && find ../protos/ -name \"*.proto\" | xargs yarn grpc_tools_node_protoc --plugin=protoc-gen-ts=\"scripts/protoc-gen-ts.sh\" -I../protos/ --js_out=import_style=commonjs,binary:lib/ --grpc_out=grpc_js:lib/ --ts_out=service=grpc-node,mode=grpc-js:lib/ && touch lib/index.js"
   },
   "dependencies": {
     "google-protobuf": "^3.21.2"

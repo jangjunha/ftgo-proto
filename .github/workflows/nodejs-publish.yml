@@ -45,7 +45,7 @@ jobs:
 
       - name: Configure Google Artifact Registry Authentication
         run: |
-          yarn config set npmAuthToken $(gcloud auth print-access-token)
+          yarn config -H set npmAuthToken $(gcloud auth print-access-token)
 
       - run: yarn install --immutable
 
