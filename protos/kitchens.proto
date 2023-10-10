@@ -9,8 +9,26 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 service KitchenService {
+  rpc ListTickets(ListTicketPayload) returns (ListTicketResponse) {}
   rpc GetTicket(GetTicketPayload) returns (Ticket) {}
   rpc AcceptTicket(AcceptTicketPayload) returns (google.protobuf.Empty) {}
+}
+
+message ListTicketPayload {
+  string restaurantId = 1;
+  uint32 first = 2;
+  string after = 3;
+  uint32 last = 4;
+  string before = 5;
+}
+
+message TicketEdge {
+  Ticket node = 1;
+  string cursor = 2;
+}
+
+message ListTicketResponse {
+  repeated TicketEdge edges = 1;
 }
 
 message GetTicketPayload {
