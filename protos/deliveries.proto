@@ -6,6 +6,7 @@ option java_package = "me.jangjunha.ftgo.delivery_service.api";
 package me.jangjunha.ftgo.delivery_service;
 
 import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
 
 service DeliveryService{
   rpc UpdateCourierAvailability(UpdateCourierAvailabilityPayload) returns (google.protobuf.Empty) {}
@@ -14,6 +15,7 @@ service DeliveryService{
   rpc DropoffDelivery(DropoffDeliveryPayload) returns (google.protobuf.Empty) {}
   rpc CreateConrier(google.protobuf.Empty) returns (Courier) {}
   rpc GetCourier(GetCourierPayload) returns (Courier) {}
+  rpc GetCourierPlan(GetCourierPayload) returns (CourierPlan) {}
 }
 
 message GetCourierPayload {
@@ -66,4 +68,15 @@ enum DeliveryActionType {
 message Courier {
   string id = 1;
   bool available = 2;
+}
+
+message CourierPlan {
+  repeated CourierAction actions = 1;
+}
+
+message CourierAction {
+  DeliveryActionType type = 1;
+  string deliveryId = 2;
+  string address = 3;
+  google.protobuf.Timestamp time = 4;
 }
