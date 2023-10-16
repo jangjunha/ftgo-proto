@@ -10,6 +10,8 @@ import "google/protobuf/empty.proto";
 service DeliveryService{
   rpc UpdateCourierAvailability(UpdateCourierAvailabilityPayload) returns (google.protobuf.Empty) {}
   rpc GetDeliveryStatus(GetDeliveryStatusPayload) returns (DeliveryStatus) {}
+  rpc PickupDelivery(PickupDeliveryPayload) returns (google.protobuf.Empty) {}
+  rpc DropoffDelivery(DropoffDeliveryPayload) returns (google.protobuf.Empty) {}
 }
 
 message UpdateCourierAvailabilityPayload {
@@ -18,6 +20,14 @@ message UpdateCourierAvailabilityPayload {
 }
 
 message GetDeliveryStatusPayload {
+  string deliveryId = 1;
+}
+
+message PickupDeliveryPayload {
+  string deliveryId = 1;
+}
+
+message DropoffDeliveryPayload {
   string deliveryId = 1;
 }
 
