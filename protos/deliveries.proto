@@ -13,6 +13,11 @@ service DeliveryService{
   rpc PickupDelivery(PickupDeliveryPayload) returns (google.protobuf.Empty) {}
   rpc DropoffDelivery(DropoffDeliveryPayload) returns (google.protobuf.Empty) {}
   rpc CreateConrier(google.protobuf.Empty) returns (Courier) {}
+  rpc GetCourier(GetCourierPayload) returns (Courier) {}
+}
+
+message GetCourierPayload {
+  string courierId = 1;
 }
 
 message UpdateCourierAvailabilityPayload {
