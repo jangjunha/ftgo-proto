@@ -48,6 +48,8 @@ message DeliveryStatus {
 message DeliveryInfo {
   string id = 1;
   DeliveryState state = 2;
+  optional google.protobuf.Timestamp pickupTime = 3;
+  optional google.protobuf.Timestamp deliveryTime = 4;
 }
 
 enum DeliveryState {
