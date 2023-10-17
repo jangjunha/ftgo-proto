@@ -12,6 +12,16 @@ service KitchenService {
   rpc ListTickets(ListTicketPayload) returns (ListTicketResponse) {}
   rpc GetTicket(GetTicketPayload) returns (Ticket) {}
   rpc AcceptTicket(AcceptTicketPayload) returns (google.protobuf.Empty) {}
+  rpc PreparingTicket(PreparingTicketPayload) returns (Ticket) {}
+  rpc ReadyForPickupTicket(ReadyForPickupTicketPayload) returns (Ticket) {}
+}
+
+message PreparingTicketPayload {
+  string ticketId = 1;
+}
+
+message ReadyForPickupTicketPayload {
+  string ticketId = 1;
 }
 
 message ListTicketPayload {
